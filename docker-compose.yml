@@ -1,7 +1,7 @@
 version: '3'
 services:
   web1:
-    image: tourradar:apache
+    image: mdrankowski/tourradar:apache
     volumes:
       - .:/var/www/auditor
     expose:
@@ -9,7 +9,7 @@ services:
     depends_on:
       - php
   web2:
-    image: tourradar:apache
+    image: mdrankowski/tourradar:apache
     volumes:
       - .:/var/www/auditor
     expose:
@@ -17,7 +17,7 @@ services:
     depends_on:
       - php
   php:
-    image: tourradar:php-fpm
+    image: mdrankowski/tourradar:php-fpm
     expose:
       - 9000
     volumes:
@@ -26,7 +26,7 @@ services:
       - mysql
       - redis
   load-balancer:
-    image: tourradar:load-balancer
+    image: mdrankowski/tourradar:load-balancer
     ports:
       - 8080:80
     depends_on:
@@ -39,19 +39,20 @@ services:
     expose:
       - 3306
   ftp:
-    image: tourradar:ftp
+    image: mdrankowski/tourradar:ftp
     environment:
       - PUBLICHOST=localhost
     volumes:
       - .:/var/www/auditor
     ports:
       - 21:21
+      - 30000-30009:30000-30009
   redis:
     image: redis:3
     expose:
       - 6379
   logstash:
-    image: tourradar:logstash
+    image: mdrankowski/tourradar:logstash
     expose:
       - 8000
     environment:
