@@ -1,0 +1,63 @@
+version: '3'
+services:
+  web1:
+    image: tourradar:apache
+    volumes:
+      - .:/var/www/auditor
+    expose:
+      - 80
+    depends_on:
+      - php
+  web2:
+    image: tourradar:apache
+    volumes:
+      - .:/var/www/auditor
+    expose:
+      - 80
+    depends_on:
+      - php
+  php:
+    image: tourradar:php-fpm
+    expose:
+      - 9000
+    volumes:
+      - .:/var/www/auditor
+    depends_on:
+      - mysql
+      - redis
+  load-balancer:
+    image: tourradar:load-balancer
+    ports:
+      - 8080:80
+    depends_on:
+      - web1
+      - web2
+  mysql:
+    image: tourradar:mysql
+    ports:
+      - 3333:3306
+    expose:
+      - 3306
+  ftp:
+    image: tourradar:ftp
+    environment:
+      - PUBLICHOST=localhost
+    volumes:
+      - .:/var/www/auditor
+    ports:
+      - 21:21
+  redis:
+    image: redis:3
+    expose:
+      - 6379
+  logstash:
+    image: tourradar:logstash
+    expose:
+      - 8000
+    environment:
+      -  PIPELINE_WORKERS=1
+      -  LOG_LEVEL=debug
+      -  XPACK_MONITORING_ENABLED=false
+    depends_on:
+      - redis
+      - mysql
