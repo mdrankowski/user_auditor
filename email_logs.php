@@ -6,8 +6,6 @@ $path = 'logs/';
 $currentDirectory = trim(shell_exec('pwd'));
 $currentTime = date('Y-m-d H:i:s');
 
-ini_set('sendmail_path', '/usr/sbin/sendmail');
-
 // no logs directory? We can't do much then
 if (!file_exists($path)) {
     echo $currentTime.': logs directory is missing'.PHP_EOL;
