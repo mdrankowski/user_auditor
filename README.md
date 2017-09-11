@@ -50,5 +50,3 @@ username: tourradar
 
 password: test
 
-FTP requires some further configuration
-
