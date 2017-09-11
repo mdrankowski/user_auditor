@@ -27,7 +27,7 @@ class AuditorTest extends TestCase
         $this->assertArrayHasKey('directory', $result);
     }
 
-    public function testEmailAudit()
+    public function testEmailLogs()
     {
         $application = new Application();
         $application->add(new Auditor());
