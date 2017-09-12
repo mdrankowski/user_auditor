@@ -20,7 +20,7 @@ class Auditor extends Command {
      */
     public function __construct()
     {
-        $this->path = 'logs/';
+        $this->path = __DIR__.'/logs/';
 
         return parent::__construct();
     }
@@ -34,7 +34,8 @@ class Auditor extends Command {
             ->setName('auditor')
             ->setDescription('Run user auditor')
             ->addArgument('function', InputArgument::REQUIRED, 'Function name (available commands: "audit_user", "email_logs")')
-            ->addArgument('mailTo', InputArgument::OPTIONAL, 'Email address for email_logs function');
+            ->addArgument('mailTo', InputArgument::OPTIONAL, 'Email address for email_logs function')
+            ->addArgument('mailFrom', InputArgument::OPTIONAL, 'Email address the email is sent from');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -92,9 +93,16 @@ class Auditor extends Command {
             return false;
         }
 
-        // validate email address
+        // validate to email address
         if (!filter_var($mailTo, FILTER_VALIDATE_EMAIL)) {
             $output->write($currentTime.': email address '.$mailTo.' is invalid'.PHP_EOL);
+            return false;
+        }
+
+        $mailFrom = $input->getArgument('mailFrom') ?? 'test@test.com';
+        // validate from email address
+        if (!filter_var($mailTo, FILTER_VALIDATE_EMAIL)) {
+            $output->write($currentTime.': email address '.$mailFrom.' is invalid'.PHP_EOL);
             return false;
         }
 
@@ -111,8 +119,9 @@ class Auditor extends Command {
         foreach ($fileList as $fileName) {
             $message .= $fileName.PHP_EOL;
         }
+
         // send the list of files to the user
-        if (!mail($mailTo, 'List of logs files', $message)) {
+        if (!mail($mailTo, 'List of logs files', $message, [], '-f'.$mailFrom)) {
             $output->write($currentTime.': there was a problem sending an email'.PHP_EOL);
             return false;
         }
