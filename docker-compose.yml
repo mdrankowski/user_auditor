@@ -54,3 +54,5 @@ services:
     depends_on:
       - redis
       - mysql
+      - web1
+      - web2
