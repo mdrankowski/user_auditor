@@ -13,6 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 class AuditorTest extends TestCase
 {
+    /**
+     * Test user audit, check the response for expected keys
+     */
     public function testUserAudit()
     {
         $application = new Application();
@@ -27,6 +30,11 @@ class AuditorTest extends TestCase
         $this->assertArrayHasKey('directory', $result);
     }
 
+    /**
+     * Test log email
+     *
+     * TODO Mock this test, use some fakemailer, add better assetions
+     */
     public function testEmailLogs()
     {
         $application = new Application();

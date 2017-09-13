@@ -26,7 +26,7 @@ class Auditor extends Command {
     }
 
     /**
-     * Symfony conf
+     * @inheritdoc
      */
     public function configure()
     {
@@ -38,6 +38,9 @@ class Auditor extends Command {
             ->addArgument('mailFrom', InputArgument::OPTIONAL, 'Email address the email is sent from');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $function = $input->getArgument('function');
@@ -46,7 +49,10 @@ class Auditor extends Command {
     }
 
     /**
-     * Output user data
+     * Audit user
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
     public function audit_user(InputInterface $input, OutputInterface $output)
     {
@@ -74,6 +80,10 @@ class Auditor extends Command {
 
     /**
      * Email logs
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return bool
      */
     public function email_logs(InputInterface $input, OutputInterface $output)
     {
